@@ -2,15 +2,30 @@ package main
 
 import (
 	"fmt"
+	"github.com/go-chi/chi/v5"
 	"net/http"
 )
 
-func handlerFunc(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "<h1>hello world foo</h1>")
+func homeHandler(writer http.ResponseWriter, request *http.Request) {
+	fmt.Fprint(writer, "<h1>home</h1>")
 }
 
+func contactHandler(writer http.ResponseWriter, request *http.Request) {
+	fmt.Fprint(writer, "<h1>contact</h1>")
+}
+
+func faqHandler(writer http.ResponseWriter, request *http.Request) {
+	fmt.Fprint(writer, "<h1>faq</h1>")
+}
 func main() {
-	http.HandleFunc("/", handlerFunc)
+	r := chi.NewRouter()
+	r.Get("/", homeHandler)
+	r.Get("/contact", contactHandler)
+	r.Get("/faq", faqHandler)
+	r.NotFound(func(writer http.ResponseWriter, request *http.Request) {
+		http.Error(writer, "page not found", http.StatusNotFound)
+	})
+
 	fmt.Println("starting server on :3000")
-	http.ListenAndServe(":3000", nil)
+	http.ListenAndServe(":3000", r)
 }
