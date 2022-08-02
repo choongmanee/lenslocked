@@ -1,6 +1,17 @@
-<h1>FAQ Page</h1>
-<ul>
-  <li><b>Is there a free version?</b> Yes! we offer a free trial for 30 days on any paid plans</li>
-  <li><b>What are your support hours?</b> We have support staff answering emails 24/7, though response times may be a bit slower on weekends.</li>
-  <li><b>How do i contact support?</b> Email use - <a href="mailto:support@lenslocked.com">support@lenslocked.com</a></li>
-</ul>
+{{ define "page" }}
+  <div class="px-6">
+    <h1 class="py-4 text-4xl ssemibold tracking-tight">FAQ Page</h1>
+    <ul class="grid grid-cols-2 gap-16">
+      {{ range . }}
+        {{ template "question" . }}
+      {{ end }}
+    </ul>
+  </div>
+{{ end }}
+
+{{ define "question" }}
+  <li class="border-t border-indigo-400 py-1 px-2">
+    <span class="block text-lg text-gray-800 semibold">{{ .Question }}</span>
+    <span class="block text-sm text-gray-500">{{ .Answer }}</span>
+  </li>
+{{ end }}
