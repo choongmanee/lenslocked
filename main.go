@@ -36,6 +36,16 @@ func main() {
 		"faq.gohtml",
 	))
 	r.Get("/faq", controllers.FAQHandler(faqTpl))
+	r.Get("/contact", controllers.StaticHandler(contactTpl))
+
+	usersC := controllers.Users{}
+	usersC.Templates.New = views.Must(views.ParseFS(templates.FS,
+		"layout-page.gohtml",
+		"partials.gohtml",
+		"signup.gohtml",
+	))
+	r.Get("/signup", usersC.New)
+	r.Post("/users", usersC.Create)
 
 	r.NotFound(func(writer http.ResponseWriter, request *http.Request) {
 		http.Error(writer, "page not found", http.StatusNotFound)
